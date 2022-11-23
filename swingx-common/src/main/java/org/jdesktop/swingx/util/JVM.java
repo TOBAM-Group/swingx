@@ -74,38 +74,38 @@ public class JVM {
    *  
    */
   public JVM() {
-    this(System.getProperty("java.specification.version"));
+    this(System.getProperty("java.version"), System.getProperty("java.specification.version"));
   }
 
   /**
    * Constructor for the OS object
    */
-  public JVM(String p_JavaVersion) {
-    if (p_JavaVersion.startsWith("21")) {
+  public JVM(String p_JavaVersion, String javaSpecificationVersion) {
+    if (javaSpecificationVersion.equals("21")) {
       jdkVersion = JDK21;
-    } else if (p_JavaVersion.startsWith("20")) {
+    } else if (javaSpecificationVersion.equals("20")) {
       jdkVersion = JDK20;
-    } else if (p_JavaVersion.startsWith("19")) {
+    } else if (javaSpecificationVersion.equals("19")) {
       jdkVersion = JDK19;
-    } else if (p_JavaVersion.startsWith("18")) {
+    } else if (javaSpecificationVersion.equals("18")) {
       jdkVersion = JDK18;
-    } else if (p_JavaVersion.startsWith("17")) {
+    } else if (javaSpecificationVersion.equals("17")) {
       jdkVersion = JDK17;
-    } else if (p_JavaVersion.startsWith("16")) {
+    } else if (javaSpecificationVersion.equals("16")) {
       jdkVersion = JDK16;
-    } else if (p_JavaVersion.startsWith("15")) {
+    } else if (javaSpecificationVersion.equals("15")) {
       jdkVersion = JDK15;
-    } else if (p_JavaVersion.startsWith("14")) {
+    } else if (javaSpecificationVersion.equals("14")) {
       jdkVersion = JDK14;
-    } else if (p_JavaVersion.startsWith("13")) {
+    } else if (javaSpecificationVersion.equals("13")) {
       jdkVersion = JDK13;
-    } else if (p_JavaVersion.startsWith("12")) {
+    } else if (javaSpecificationVersion.equals("12")) {
       jdkVersion = JDK12;
-    } else if (p_JavaVersion.startsWith("11")) {
+    } else if (javaSpecificationVersion.equals("11")) {
       jdkVersion = JDK11;
-    } else if (p_JavaVersion.startsWith("10")) {
+    } else if (javaSpecificationVersion.equals("10")) {
       jdkVersion = JDK10;
-    } else if (p_JavaVersion.startsWith("9")) {
+    } else if (javaSpecificationVersion.equals("9")) {
       jdkVersion = JDK9;
     } else if (p_JavaVersion.startsWith("1.8.")) {
       jdkVersion = JDK1_8;
