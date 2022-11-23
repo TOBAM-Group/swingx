@@ -25,6 +25,7 @@ import javax.swing.UIManager.LookAndFeelInfo;
 
 /**
  * Deals with the different version of the Java Virtual Machine. <br>
+ * To be replaced by commons-lang's SystemUtils or another sane implementation
  */
 @SuppressWarnings("nls")
 public class JVM {
@@ -38,6 +39,20 @@ public class JVM {
   public final static int JDK1_6 = 1600;
   public final static int JDK1_6N = 1610;
   public final static int JDK1_7 = 1700;
+  public final static int JDK1_8 = 1800;
+  public final static int JDK9 = 9000;
+  public final static int JDK10 = 10000;
+  public final static int JDK11 = 11000;
+  public final static int JDK12 = 12000;
+  public final static int JDK13 = 13000;
+  public final static int JDK14 = 14000;
+  public final static int JDK15 = 15000;
+  public final static int JDK16 = 16000;
+  public final static int JDK17 = 17000;
+  public final static int JDK18 = 18000;
+  public final static int JDK19 = 19000;
+  public final static int JDK20 = 20000;
+  public final static int JDK21 = 21000;
 
   private static JVM current;
   static {
@@ -59,14 +74,42 @@ public class JVM {
    *  
    */
   public JVM() {
-    this(System.getProperty("java.version"));
+    this(System.getProperty("java.specification.version"));
   }
 
   /**
    * Constructor for the OS object
    */
   public JVM(String p_JavaVersion) {
-    if (p_JavaVersion.startsWith("1.7.")) {
+    if (p_JavaVersion.startsWith("21")) {
+      jdkVersion = JDK21;
+    } else if (p_JavaVersion.startsWith("20")) {
+      jdkVersion = JDK20;
+    } else if (p_JavaVersion.startsWith("19")) {
+      jdkVersion = JDK19;
+    } else if (p_JavaVersion.startsWith("18")) {
+      jdkVersion = JDK18;
+    } else if (p_JavaVersion.startsWith("17")) {
+      jdkVersion = JDK17;
+    } else if (p_JavaVersion.startsWith("16")) {
+      jdkVersion = JDK16;
+    } else if (p_JavaVersion.startsWith("15")) {
+      jdkVersion = JDK15;
+    } else if (p_JavaVersion.startsWith("14")) {
+      jdkVersion = JDK14;
+    } else if (p_JavaVersion.startsWith("13")) {
+      jdkVersion = JDK13;
+    } else if (p_JavaVersion.startsWith("12")) {
+      jdkVersion = JDK12;
+    } else if (p_JavaVersion.startsWith("11")) {
+      jdkVersion = JDK11;
+    } else if (p_JavaVersion.startsWith("10")) {
+      jdkVersion = JDK10;
+    } else if (p_JavaVersion.startsWith("9")) {
+      jdkVersion = JDK9;
+    } else if (p_JavaVersion.startsWith("1.8.")) {
+      jdkVersion = JDK1_8;
+    } else if (p_JavaVersion.startsWith("1.7.")) {
       jdkVersion = JDK1_7;
     } else if (p_JavaVersion.startsWith("1.6.")) {
       for (LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
