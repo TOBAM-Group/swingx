@@ -67,24 +67,6 @@ public class TreeModelSupportTest extends TestCase {
     
     /**
      * test modelSupport pathChanged: 
-     * not null path  must not be empty, (checked by TreePath)
-     * path elements must not be null (core issue - should be checked
-     *   by TreePath but isn't)
-     */
-    @Test
-    public void testPathChangedNotNullPathElements() {
-        TreePath path = new TreePath(new Object[] {null});
-        try {
-            support.firePathChanged(path);
-            fail("must not allow null path elements");
-        } catch (NullPointerException e) {
-            // expected
-        } 
-        // unexpected exception
-    }
-    
-    /**
-     * test modelSupport pathChanged: 
      * throw on null path
      */
     @Test
@@ -113,28 +95,6 @@ public class TreeModelSupportTest extends TestCase {
         assertNull(structureEvent.getTreePath());
         assertNull(structureEvent.getPath());
     }
-
-    /**
-     * test modelSupport treeStructureChanged: 
-     * not null path  must not be empty, (checked by TreePath)
-     * path elements must not be null (core issue - should be checked
-     *   by TreePath but isn't)
-     * first element must be root (? not sure so don't enforce).
-     *
-     *
-     */
-    @Test
-    public void testTreeStructureChangedNotNullPathElements() {
-        TreePath path = new TreePath(new Object[] {null});
-        try {
-            support.fireTreeStructureChanged(path);
-            fail("must not allow null path elements");
-        } catch (NullPointerException e) {
-            // expected
-        } 
-        // unexpected exception
-    }
-    
 
     /**
      * test modelSupport treeStructureChanged: 
