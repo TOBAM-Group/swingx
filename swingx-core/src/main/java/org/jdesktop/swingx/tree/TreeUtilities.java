@@ -14,14 +14,14 @@ import javax.swing.tree.TreePath;
 
 /**
  * Contains convenience classes/methods for handling hierarchical Swing structures.
- * 
+ *
  * @author Jeanette Winzenburg, Berlin
  */
 @SuppressWarnings({ "unchecked", "rawtypes" })
 public class TreeUtilities {
 
     /**
-     * An enumeration that is always empty. 
+     * An enumeration that is always empty.
      */
     public static final Enumeration EMPTY_ENUMERATION
         = new Enumeration() {
@@ -41,28 +41,28 @@ public class TreeUtilities {
         protected TreeModel model;
         // the last component is the current subtree to travers
         private TreePath path;
-        
+
         /**
-         * Instantiates a preorder traversal starting from the root of the 
+         * Instantiates a preorder traversal starting from the root of the
          * TreeModel.
-         * 
+         *
          * @param model the TreeModel to travers.
          */
         public PreorderModelEnumeration(TreeModel model) {
             this(model, model.getRoot());
         }
-        
+
         /**
          * Instantiates a preorder traversal of the TreeModel which
          * starts at the given node. It iterates over all nodes of the
          * subtree, only.
-         * 
+         *
          * @param model the TreeModel to travers.
          * @param node the node to start
          */
         public PreorderModelEnumeration(TreeModel model, Object node) {
             this.model = model;
-            stack = new ArrayDeque<Enumeration>();
+            stack = new ArrayDeque<>();
             pushNodeAsEnumeration(node);
         }
 
@@ -71,7 +71,7 @@ public class TreeUtilities {
          * last path component of the given TreePath. It iterates over all nodes
          * of the subtree and all of its siblings, with the same end as a traversal
          * starting at the model's roolt would have.
-         * 
+         *
          * @param model the TreeModel to travers.
          * @param path the TreePath to start from
          */
@@ -79,7 +79,7 @@ public class TreeUtilities {
             this(model, path.getLastPathComponent());
             this.path = path;
         }
-        
+
         @Override
         public boolean hasMoreElements() {
             return (!stack.isEmpty() && stack.peek().hasMoreElements());
@@ -106,10 +106,12 @@ public class TreeUtilities {
         }
 
         /**
-         * 
+         *
          */
         private void updateSubtree() {
-            if (path == null) return;
+            if (path == null) {
+				return;
+			}
             TreePath parentPath = path.getParentPath();
             if (parentPath == null) {
                 // root
@@ -137,44 +139,44 @@ public class TreeUtilities {
             v.add(node);
             stack.push(v.elements()); //children(model));
         }
-        
+
 
     }  // End of class PreorderEnumeration
 
-    
+
     /**
      * Implementation of a breadthFirst traversal of a subtree in a TreeModel.
      */
     public static class BreadthFirstModelEnumeration implements Enumeration {
         protected Queue<Enumeration> queue;
         private TreeModel model;
-        
+
         public BreadthFirstModelEnumeration(TreeModel model) {
             this(model, model.getRoot());
         }
-        
+
         public BreadthFirstModelEnumeration(TreeModel model, Object node) {
             this.model = model;
             // Vector is just used for getting an Enumeration easily
             Vector v = new Vector(1);
-            v.addElement(node);    
-            queue = new ArrayDeque<Enumeration>();
+            v.addElement(node);
+            queue = new ArrayDeque<>();
             queue.offer(v.elements());
         }
-        
+
         @Override
         public boolean hasMoreElements() {
             return !queue.isEmpty() &&
                     queue.peek().hasMoreElements();
         }
-        
+
         @Override
         public Object nextElement() {
             // look at head
             Enumeration enumer = queue.peek();
             Object node = enumer.nextElement();
             Enumeration children = children(model, node);
-            
+
             if (!enumer.hasMoreElements()) {
                 // remove head
                 queue.poll();
@@ -185,10 +187,10 @@ public class TreeUtilities {
             }
             return node;
         }
-        
+
     }  // End of class BreadthFirstEnumeration
-    
-    
+
+
     /**
      * Implementation of a postorder traversal of a subtree in a TreeModel.
      */
@@ -197,27 +199,27 @@ public class TreeUtilities {
         protected Object root;
         protected Enumeration children;
         protected Enumeration subtree;
-        
+
         public PostorderModelEnumeration(TreeModel model) {
             this(model, model.getRoot());
         }
-        
+
         public PostorderModelEnumeration(TreeModel model, Object node) {
             this.model = model;
             root = node;
             children = children(model, root);
             subtree = EMPTY_ENUMERATION;
         }
-        
+
         @Override
         public boolean hasMoreElements() {
             return root != null;
         }
-        
+
         @Override
         public Object nextElement() {
             Object retval;
-            
+
             if (subtree.hasMoreElements()) {
                 retval = subtree.nextElement();
             } else if (children.hasMoreElements()) {
@@ -228,12 +230,12 @@ public class TreeUtilities {
                 retval = root;
                 root = null;
             }
-            
+
             return retval;
         }
-        
+
     }  // End of class PostorderEnumeration
-    
+
     /**
      * Implementation of a preorder traversal of a subtree with nodes of type TreeNode.
      */
@@ -242,9 +244,9 @@ public class TreeUtilities {
 
         public PreorderNodeEnumeration(M rootNode) {
             // Vector is just used for getting an Enumeration easily
-            Vector<M> v = new Vector<M>(1);
-            v.addElement(rootNode);     
-            stack = new ArrayDeque<Enumeration<M>>();
+            Vector<M> v = new Vector<>(1);
+            v.addElement(rootNode);
+            stack = new ArrayDeque<>();
             stack.push(v.elements());
         }
 
@@ -270,7 +272,7 @@ public class TreeUtilities {
         }
 
         protected Enumeration<M> getChildren(M node) {
-            Enumeration<M> children = node.children();
+			Enumeration<M> children = (Enumeration<M>) node.children();
             return children;
         }
 
@@ -314,23 +316,23 @@ public class TreeUtilities {
 
         /**
          * Creates and returns a PostorderEnumeration on the given node.
-         * 
+         *
          * @param node the node to create the PostorderEnumeration for
          * @return the PostorderEnumeration on the given node
          */
         protected PostorderNodeEnumeration<M> createSubTree(M node) {
-            return new PostorderNodeEnumeration<M>(node);
+            return new PostorderNodeEnumeration<>(node);
         }
-        
+
         /**
          * Returns an enumeration on the children of the root node.
          * @param node
          * @return
          */
         protected Enumeration<M> getChildren(M node) {
-            return node.children();
+			return (Enumeration<M>) node.children();
         }
-        
+
 
     }  // End of class PostorderEnumeration
 
@@ -340,28 +342,28 @@ public class TreeUtilities {
      */
     public static class BreadthFirstNodeEnumeration<M extends TreeNode> implements Enumeration<M> {
         protected Queue<Enumeration<M>> queue;
-        
+
         public BreadthFirstNodeEnumeration(M rootNode) {
             // Vector is just used for getting an Enumeration easily
-            Vector<M> v = new Vector<M>(1);
-            v.addElement(rootNode);    
-            queue = new ArrayDeque<Enumeration<M>>();
+            Vector<M> v = new Vector<>(1);
+            v.addElement(rootNode);
+            queue = new ArrayDeque<>();
             queue.offer(v.elements());
         }
-        
+
         @Override
         public boolean hasMoreElements() {
             return !queue.isEmpty() &&
                     queue.peek().hasMoreElements();
         }
-        
+
         @Override
         public M nextElement() {
             // look at head
             Enumeration<M> enumer = queue.peek();
             M node = enumer.nextElement();
             Enumeration<M> children = getChildren(node);
-            
+
             if (!enumer.hasMoreElements()) {
                 // remove head
                 queue.poll();
@@ -374,17 +376,17 @@ public class TreeUtilities {
         }
 
         protected Enumeration<M> getChildren(M node) {
-            Enumeration<M> children = node.children();
+			Enumeration<M> children = (Enumeration<M>) node.children();
             return children;
         }
-        
-        
+
+
     }  // End of class BreadthFirstEnumeration
 
     /**
-     * Creates and returns an Enumeration across the direct children of the 
-     * rootNode in the given TreeModel. 
-     * 
+     * Creates and returns an Enumeration across the direct children of the
+     * rootNode in the given TreeModel.
+     *
      * @param model the TreeModel which contains parent, must not be null
      * @return an Enumeration across the direct children of the model's root, the enumeration
      *    is empty if the root is null or contains no children
@@ -392,11 +394,11 @@ public class TreeUtilities {
     public static Enumeration children(TreeModel model) {
         return children(model, model.getRoot());
     }
-    
+
     /**
      * Creates and returns an Enumeration across the direct children of parentNode
-     * in the given TreeModel. 
-     * 
+     * in the given TreeModel.
+     *
      * @param model the TreeModel which contains parent, must not be null
      * @param parent the parent of the enumerated children
      * @return an Enumeration across the direct children of parent, the enumeration
@@ -418,13 +420,13 @@ public class TreeUtilities {
             public Object nextElement() {
                 return model.getChild(parent, currentIndex++);
             }
-            
+
         };
         return e;
     }
-    
+
     private TreeUtilities() {}
-    
+
     @SuppressWarnings("unused")
     private static final Logger LOG = Logger.getLogger(TreeUtilities.class
             .getName());
